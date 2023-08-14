@@ -5,13 +5,13 @@ const canConstruct = (target, wordBank) => {
     if(target === "") return true;
     for(let word of wordBank){
         //get a prefix from the word bank
-        // The indexOf() method returns the first index at which a given element can be found in the array, or -1 if it is not present. 
+        // The indexOf() method returns the first index at which a given element can be found in the array, or -1 if it is not present.
         // indexOf(searchElement)
         // indexOf(searchElement, fromIndex)
 
         if(target.indexOf(word) === 0){
-            // The slice() method returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included) 
-            // where start and end represent the index of items in that array. 
+            // The slice() method returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included)
+            // where start and end represent the index of items in that array.
             // The original array will not be modified.
             // slice()
             // slice(start)
@@ -34,8 +34,8 @@ const canConstruct_Optimized = (target, wordBank, memo={}) => {
     if(target in memo) return memo[target];
     for(let word of wordBank){
         if(target.indexOf(word) === 0){
-            // The slice() method returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included) 
-            // where start and end represent the index of items in that array. 
+            // The slice() method returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included)
+            // where start and end represent the index of items in that array.
             // The original array will not be modified.
             // slice()
             // slice(start)
@@ -52,8 +52,33 @@ const canConstruct_Optimized = (target, wordBank, memo={}) => {
     return memo[target];
 }
 
-console.log(canConstruct("abcdef", ['ab', 'abc','cd','def', 'abcd']));
-console.log(canConstruct("skateboard", ['ab', 'abc','cd','def', 'abcd']));
-console.log(canConstruct("mobilze", ['ab', 'abc','cd','def', 'abcd']));
-console.log(canConstruct("enterapotentpot", ['a', 'p','ent','enter', 'ot', 'o', 't']));
-console.log(canConstruct_Optimized("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ['e', 'eee','eeeeeee','eeeeeeeeee', 'abcd']));
+// console.log(canConstruct("abcdef", ['ab', 'abc','cd','def', 'abcd']));
+// console.log(canConstruct("skateboard", ['ab', 'abc','cd','def', 'abcd']));
+// console.log(canConstruct("mobilze", ['ab', 'abc','cd','def', 'abcd']));
+// console.log(canConstruct("enterapotentpot", ['a', 'p','ent','enter', 'ot', 'o', 't']));
+// console.log(canConstruct_Optimized("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ['e', 'eee','eeeeeee','eeeeeeeeee', 'abcd']));
+
+
+const canConstruct_Tabulation = (target, wordBank) => {
+    const table = Array(target.length + 1).fill(false);
+
+    table[0] = true;
+    for (let i = 0; i < target.length; i++){
+        if(table[i] === true){
+            for(let word of wordBank){
+                //if word matches the characters starting at position i
+                if(target.slice(i, i + word.length) === word){
+                    table[i + word.length] = true;
+                }
+            }
+        }
+    }
+
+    return table[target.length]
+}
+
+console.log(canConstruct_Tabulation("abcdef", ['ab', 'abc','cd','def', 'abcd']));
+console.log(canConstruct_Tabulation("skateboard", ['ab', 'abc','cd','def', 'abcd']));
+console.log(canConstruct_Tabulation("mobilze", ['ab', 'abc','cd','def', 'abcd']));
+console.log(canConstruct_Tabulation("enterapotentpot", ['a', 'p','ent','enter', 'ot', 'o', 't']));
+console.log(canConstruct_Tabulation("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ['e', 'eee','eeeeeee','eeeeeeeeee', 'abcd']));

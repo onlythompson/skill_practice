@@ -43,8 +43,33 @@ const allConstruct_Optimized = (target, wordBank, memo={}) => {
 
 }
 
-console.log(allConstruct("abcdef", ['ab', 'abc','cd','def', 'abcd']));
-console.log(allConstruct("purple", ['purp', 'p','ur','le', 'purpl']));
-console.log(allConstruct("mobilze", ['ab', 'abc','cd','def', 'abcd']));
-console.log(allConstruct("enterapotentpot", ['a', 'p','ent','enter', 'ot', 'o', 't']));
-console.log(allConstruct_Optimized("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ['e', 'eee','eeeeeee','eeeeeeeeee', 'abcd']))
+// console.log(allConstruct("abcdef", ['ab', 'abc','cd','def', 'abcd']));
+// console.log(allConstruct("purple", ['purp', 'p','ur','le', 'purpl']));
+// console.log(allConstruct("mobilze", ['ab', 'abc','cd','def', 'abcd']));
+// console.log(allConstruct("enterapotentpot", ['a', 'p','ent','enter', 'ot', 'o', 't']));
+// console.log(allConstruct_Optimized("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ['e', 'eee','eeeeeee','eeeeeeeeee', 'abcd']))
+
+//tabulation
+const allConstruct_Tabulation = (target, wordBank) => {
+    const table = Array(target.length + 1).fill().map(() => []);
+
+    table[0] = [[]];
+    for (let i = 0; i < target.length; i++){
+            for(let word of wordBank){
+                //if word matches the characters starting at position i
+                if(target.slice(i, i + word.length) === word){
+                    const combinations = table[i].map(subArr => [...subArr, word]);
+                    table[i + word.length].push(...combinations)
+                }
+            }
+        // }
+    }
+
+    return table[target.length]
+}
+
+console.log(allConstruct_Tabulation("abcdef", ['ab', 'abc','cd','def', 'abcd']));
+console.log(allConstruct_Tabulation("purple", ['purp', 'p','ur','le', 'purpl']));
+console.log(allConstruct_Tabulation("mobilze", ['ab', 'abc','cd','def', 'abcd']));
+console.log(allConstruct_Tabulation("enterapotentpot", ['a', 'p','ent','enter', 'ot', 'o', 't']));
+// console.log(allConstruct_Tabulation("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ['e', 'eee','eeeeeee','eeeeeeeeee', 'abcd']))
